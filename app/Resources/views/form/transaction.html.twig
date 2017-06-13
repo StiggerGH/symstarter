@@ -1,0 +1,83 @@
+{% extends 'ItMyipMainBundle::layout.html.twig' %}
+
+
+{% block content %}
+<div class="row">
+   <div class="col-md-6">
+      <h4>
+         Редактирование операции
+      </h4>
+
+      <form method="post" enctype=multipart/form-data>
+         <div class="form-group">
+            <label>Дата</label>
+            <input type="date" class="form-control" name=form[date] value="{{ data.transaction.getDate()|date('Y-m-d') }}">
+         </div>
+
+         <div class="form-group">
+            <label>Сумма</label>
+            <input type="text" class="form-control" name=form[summ]  value="{{ data.transaction.getSumm() }}">
+         </div>
+
+         <div class="form-group">
+            <label>Тип</label>
+            <select id="optype" name=form[type] class="form-control">
+               {% for v in data.opTypes %}
+               <option {{ data.transaction.getType() == v.id ? 'selected' : "" }} value="{{ v.id }}">{{ v.title }}</option>
+               {% endfor %}
+            </select>    
+         </div>
+
+         <div id="ops1" class="form-group optype">
+            <label>Приходная операция</label>
+            <select name=form[inboundType] class="form-control">
+               {% for v in data.inboundTypes %}
+               <option {{ data.transaction.getSubType() == v.id ? 'selected' : "" }} value="{{ v.id }}">{{ v.title }}</option>
+               {% endfor %}
+            </select>    
+         </div>
+
+         <div id="ops2" class="form-group optype">
+            <label>Расходная операция</label>
+            <select name=form[outboundType] class="form-control">
+               {% for v in data.outboundTypes %}
+               <option {{ data.transaction.getSubType() == v.id ? 'selected' : "" }} value="{{ v.id }}">{{ v.title }}</option>
+               {% endfor %}
+            </select>    
+         </div>
+
+         <div class="form-group">
+            <label>Описание</label>
+            <input type="text" class="form-control" name=form[description]  value="{{ data.transaction.getDescription() }}">
+         </div>
+
+         <button type="submit" name=form[submit][ok] class="btn btn-success">Сохранить</button>
+         <button type="submit" name=form[submit][apply] class="btn btn-default">Применить</button>
+         <button type="submit" name=form[submit][cancel] class="btn btn-default">Отмена</button>
+      </form>
+
+   </div>
+</div>
+
+<script>
+
+   $(function(){
+      var opIn=1;
+      var opOut=2;
+
+      function changeOp(sel){
+         $('.optype').hide();
+         $('#ops'+sel).show();
+      }
+
+      $('#optype').on('change', function(e){
+         changeOp($('#optype').val());
+         console.log($('#optype').val());
+      })
+
+      changeOp({{ data.transaction.getType() }});
+
+   });
+
+</script>
+{% endblock %}

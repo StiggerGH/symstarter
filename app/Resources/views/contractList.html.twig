@@ -1,0 +1,24 @@
+{% extends 'ItMyipMainBundle::layout.html.twig' %}
+
+{% block content %}
+
+<a href="{{ path('contractEdit') }}">Добавить договор</a>
+<table class="table table-striped">
+   <tr>
+      <th>Название</th>         
+      <th width=10%>Дата</th>         
+      <th width=10%></th>
+   </tr>
+
+	{% for contract in data.contracts %}
+   <tr >
+      <td><a href="{{ path('contractEdit', {'id': contract.id}) }}">{{ contract.title }}</a></td>         
+      <td>{{ contract.date|date('d.m.Y') }}</td>         
+		<td><a href="{{ path('contractEdit', {'id': contract.id}) }}"><i class="fa fa-pencil fa-fw" aria-hidden="true"></i></a></td>      
+   </tr>
+   {% endfor %}
+
+</table>
+
+{% endblock %} 
+
